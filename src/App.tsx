@@ -4,7 +4,7 @@ import { SimpleForm } from './components/SimpleForm';
 
 function App() {
   return (
-    <div >
+    <div className='bg-slate-200'>
      <SimpleForm/> 
     </div>
   );
