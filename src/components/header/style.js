@@ -10,5 +10,6 @@ export const HeaderContainer = styled.div`
   flex 
   justify-center
   items-center
+  bg-white
   `}
 `
