@@ -6,6 +6,12 @@ import { laboratories, propreties } from './selectsData'
 
 type Props = {}
 
+interface IProprety {
+  id: number,
+  propretyName: string,
+  cnpj: string
+}
+
 export const FormInputs: FC<Props> = (_props) => {
   const[ formData, setFormData] = useState(
     {
@@ -24,7 +30,23 @@ export const FormInputs: FC<Props> = (_props) => {
       observacoes: ''
   });
 
-  
+  const handleChange = (e: { target: { name: string; value: string; }; }) => {
+    const { name, value } = e.target;
+    setFormData((prevState: any) => ({
+        ...prevState,
+        [name]: value
+    }));
+  };
+
+  const setProprety = (event: any) => { 
+    const value = event.target.value;
+    const {id, propretyName, cnpj} = propreties.find((prop) => +prop.id === +value) as IProprety
+   
+    setFormData((prevState: any) => ({
+      ...prevState,
+      infosPropriedade: {id, nome:propretyName, cnpj}
+    }));
+} 
 
   return (
     <FormContainer>
@@ -36,15 +58,36 @@ export const FormInputs: FC<Props> = (_props) => {
         <div className='p-5'>
           <div className="flex flex-wrap -mx-3 mb-10">
             <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <input type="text" className="input-field" required/>
+              <input 
+                type="text"
+                className="input-field" 
+                required
+                name="nome"
+                value={formData.nome}
+                onChange={handleChange}
+                />
               <label className="input-label">Nome *</label>
             </div>
             <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <input type="date" className="input-field" required />
+              <input 
+                type="date" 
+                className="input-field" 
+                required
+                name="dataInicial"
+                value={formData.dataInicial}
+                onChange={handleChange}
+              />
               <label className="input-label">Data Inicial *</label>
             </div>
             <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <input type="date" className="input-field" required />
+              <input 
+                type="date" 
+                className="input-field" 
+                required
+                name="dataFinal"
+                value={formData.dataFinal}
+                onChange={handleChange}
+                />
               <label className="input-label">Data Final *</label>
             </div>
           </div>
@@ -52,10 +95,18 @@ export const FormInputs: FC<Props> = (_props) => {
         
           <div className="flex flex-wrap -mx-3 mb-10">          
             <div className="input w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <select className="input-field" id="grid-state">
+                <select 
+                className="input-field" id="grid-state"
+                name="infosPropriedade"
+                onChange={setProprety}
+
+                >
                  {
                    propreties.map(({id, propretyName}) => (
-                    <option key={id}>
+                    <option 
+                    key={id}
+                    value={id} 
+                    >
                       <span>{propretyName}</span>
                     </option>
                    ))
