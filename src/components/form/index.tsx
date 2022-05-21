@@ -2,7 +2,8 @@ import React, { FC, useState } from 'react'
 import { FormContainer } from './style'
 import './index.scss'
 import { laboratories, propreties } from './selectsData'
-
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 type Props = {}
 
@@ -10,6 +11,11 @@ interface IProprety {
   id: number,
   propretyName: string,
   cnpj: string
+}
+
+interface ILaboratory {
+  id: number,
+  laboratoryName: string,
 }
 
 export const FormInputs: FC<Props> = (_props) => {
@@ -30,6 +36,20 @@ export const FormInputs: FC<Props> = (_props) => {
       observacoes: ''
   });
 
+  function sentDataForm () { 
+    toast.success('Cadastro realizado com sucesso!', {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme:"colored",
+      });
+    console.log(formData)
+  }
+
   const handleChange = (e: { target: { name: string; value: string; }; }) => {
     const { name, value } = e.target;
     setFormData((prevState: any) => ({
@@ -47,13 +67,28 @@ export const FormInputs: FC<Props> = (_props) => {
       infosPropriedade: {id, nome:propretyName, cnpj}
     }));
 } 
+const setLaboratory = (event: any) => { 
+  const value = event.target.value;
+  const {id, laboratoryName} = laboratories.find((prop) => +prop.id === +value) as ILaboratory
+ 
+  setFormData((prevState: any) => ({
+    ...prevState,
+    infosPropriedade: {id, nome:laboratoryName,}
+  }));
+} 
 
   return (
     <FormContainer>
       <form action="" className='w-4/5 bg-white'>
         <div className=' h-20 bg-teal-700 text-white flex items-center px-5 justify-between'>
           <h2 className=' text-2xl font-bold'>Teste front-end</h2>
-          <button className=' font-bold text-2xl bg-teal-500 h-14 w-28'>Salvar</button>
+          <button 
+            className=' font-bold text-2xl bg-teal-500 h-14 w-28'
+            type="button"
+            onClick={() => sentDataForm()}
+          >
+            Salvar
+          </button>
         </div>
         <div className='p-5'>
           <div className="flex flex-wrap -mx-3 mb-10">
@@ -101,6 +136,7 @@ export const FormInputs: FC<Props> = (_props) => {
                 onChange={setProprety}
 
                 >
+                <option className='op'/>
                  {
                    propreties.map(({id, propretyName}) => (
                     <option 
@@ -112,21 +148,27 @@ export const FormInputs: FC<Props> = (_props) => {
                    ))
                  }                
                 </select>
-              <label className="input-label block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
+              <label className="input-label block tracking-wide text-gray-700 text-ls font-bold mb-2" htmlFor="grid-state">
                 Propriedade *
               </label>
             </div>
             <div className="input w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <select className="input-field" id="grid-state">
+                <select 
+                className="input-field" 
+                id="grid-state"
+                name="laboratorio"
+                onChange={setLaboratory}
+                >
+                <option className='op'/>
                 {
                    laboratories.map(({id, laboratoryName}) => (
-                    <option key={id}>
+                    <option key={id} value={id}>
                       <span>{laboratoryName}</span>
                     </option>
                    ))
                  }                 
                 </select>
-              <label className="input-label block tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
+              <label className="input-label block tracking-wide text-gray-700 text-ls font-bold mb-2" htmlFor="grid-state">
                 Laboratório *
               </label>
             </div>
@@ -134,7 +176,7 @@ export const FormInputs: FC<Props> = (_props) => {
           </div>
           <div className="flex flex-wrap -mx-3 mb-10">          
             <div className="w-full px-3 mb-6 md:mb-0">
-              <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" htmlFor="grid-state">
+              <label className="block tracking-wide text-gray-700 text-ls font-bold mb-2" htmlFor="grid-state">
                 Observações
               </label>
               <textarea className=' w-full h-40'/>
@@ -142,6 +184,17 @@ export const FormInputs: FC<Props> = (_props) => {
           </div>
         </div>
       </form>
-    </FormContainer>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        />  
+      </FormContainer>
   )
 }

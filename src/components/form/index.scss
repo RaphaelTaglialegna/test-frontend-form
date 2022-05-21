@@ -42,3 +42,6 @@ input {
 
 // Para remover os campos mm/dd/2000 default
 	input[type='date']:in-range::-webkit-datetime-edit-year-field,input[type='date']:in-range::-webkit-datetime-edit-month-field,input[type='date']:in-range::-webkit-datetime-edit-day-field,input[type='date']:in-range::-webkit-datetime-edit-text{  color: transparent;}
+.op {
+	display: none;
+}
