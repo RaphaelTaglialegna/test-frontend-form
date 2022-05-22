@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from '@hookform/error-message';
 
-
 type Props = {}
 
 type Inputs = {
@@ -18,16 +17,6 @@ type Inputs = {
   laboratorio: number
   observacoes: string
 }
-interface IProprety {
-  id: number | string,
-  nome: string,
-  cnpj: string
-}
-
-// interface ILaboratory {
-//   id: number | string,
-//   laboratoryName: string,
-// }
 
 export const FormInputs: FC<Props> = (_props) => {
   const [readToSent, setReadToSent] = useState(false);
@@ -119,11 +108,12 @@ export const FormInputs: FC<Props> = (_props) => {
       onSubmit={handleSubmit(onSubmit)}
       >
 
-        <div className=' h-20 bg-teal-700 text-white flex items-center px-5 justify-between'>
-          <h2 className=' text-2xl font-bold'>Teste front-end</h2>
+        <div className='h-20 bg-teal-700 text-white flex items-center px-5 justify-between'>
+          <h1 data-testid="title" className='text-2xl font-bold'>Teste front-end</h1>
           <button 
-            className=' font-bold text-2xl bg-teal-500 h-14 w-28'
+            className='font-bold text-2xl bg-teal-500 h-14 w-28'
             type="submit"
+            data-testid="id-send"
             >
             Salvar
           </button>
@@ -132,13 +122,14 @@ export const FormInputs: FC<Props> = (_props) => {
           <div className="flex flex-wrap -mx-3 mb-10">
             <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
               <input 
+                id="nome"
                 type="text"
                 className="input-field" 
                 required
                 {...register("nome", { required: "Error"})}
                 />
              
-              <label id="nome" className="input-label">Nome *</label>
+              <label htmlFor='nome' className="input-label">Nome *</label>
               <ErrorMessage
                 errors={errors}
                 name="nome"
@@ -149,12 +140,13 @@ export const FormInputs: FC<Props> = (_props) => {
             </div>
             <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
               <input 
+                id='dataInicial'
                 type="date" 
                 className="input-field" 
                 required
                 {...register("dataInicial", { required: "Error"})}
                 />
-              <label className="input-label">Data Inicial *</label>
+              <label htmlFor='dataInicial' className="input-label">Data Inicial *</label>
               <ErrorMessage
                 errors={errors}
                 name="dataInicial"
@@ -163,13 +155,14 @@ export const FormInputs: FC<Props> = (_props) => {
 
             </div>
             <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <input 
+              <input
+                id='dataFinal'
                 type="date" 
                 className="input-field" 
                 required
                 {...register("dataFinal", { required: "Error"})}
                 />
-              <label className="input-label">Data Final *</label>
+              <label htmlFor='dataFinal' className="input-label">Data Final *</label>
             </div>
             <ErrorMessage
                 errors={errors}
@@ -231,12 +224,14 @@ export const FormInputs: FC<Props> = (_props) => {
           </div>
           <div className="flex flex-wrap -mx-3 mb-10">          
             <div className="w-full px-3 mb-6 md:mb-0">
-              <label className="block tracking-wide text-gray-700 text-ls font-bold mb-2" htmlFor="grid-state">
+              <label className="block tracking-wide text-gray-700 text-ls font-bold mb-2" htmlFor="observacoes">
                 Observações
+              <textarea 
+              id='observacoes'
+              className=' w-full h-40'
+              {...register("observacoes")}
+              />
               </label>
-              <textarea className=' w-full h-40'
-               {...register("observacoes")}
-               />
             </div>
           </div>
         </div>
