@@ -1,46 +1,70 @@
-# Getting Started with Create React App
+## Aplicação de Usuários
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<img src="https://i.ibb.co/jMwF1wS/Agrotis-Image.png" alt="Agrotis-Image" width="60%" border="0">
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/RaphaelTaglialegna/backendContacts">
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/RaphaelTaglialegna/backendContacts">
+  <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/RaphaelTaglialegna/backendContacts">
+  <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/RaphaelTaglialegna/backendContacts">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues/RaphaelTaglialegna/backendContacts">
+</p>
 
-## Available Scripts
+### Sobre
 
-In the project directory, you can run:
+Aplicação que lista, armazena, valida, modifica e exclui um usuário padronizado a partir de requisições em um banco de dados relacional (Postgres).
 
-### `npm start`
+### Desenvolvimento
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Frontend, Backend e Banco de Dados:
+- TypeScript.
+- React.
+- Node.js.
+- ORM Sequelize.
+- Testes de Integração com Mocha, Chai e Sinon.
+- Banco de dados PostgreSQL.
+- Containers Docker das Aplicação e banco de Dados.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Instalação 
 
-### `npm test`
+Para rodar esse projeto, existe duas formas: 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1 - Rodando localmente com o PostgreSQL instalado previamente usando, scripts:  
+``` 
+cd backend
+npm install // para instalar as dependências
+npm start // para inicializar a aplicação e criar e implementar o banco de dados.
 
-### `npm run build`
+cd frontend
+npm install // para instalar as dependências
+npm start // para inicializar a pagina.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+2 - Rodando com o Docker Compose e utilizando, nele tanto a aplicação quanto o banco de dados estão containirizados.  
+``` 
+npm install // para instalar as dependências
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+npm run compose:up // para inicializar a aplicação e criar e implementar o banco de dados.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+docker container ls // para verificar as portas usadas no localhost são: 3000 do frontend e 3001 do backend.
+```
 
-### `npm run eject`
+#### Instruções da aplicação. 
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Rotas e requisições: 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- GET para `/users`, vai retornar todos os usuários.
+- GET para `/users/:id`, vai retornar apenas um usuário com um ID válido.
+- POST para `/users, para criar um usuário.
+- PUT para `/users/:id`, para editar um usuário com um ID válido.
+- DELETE para `/users/:id`, para excluir um usuário com um ID válido.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Requisitos da Aplicação 
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Cadastro de usuário seguindo o seguinte modelo (* campos obrigatórios): 
+  - Contato 
+    - Nome Completo*
+    - E-mail*
+    - Password*
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Requisitos dos Testes
+Rode o `npm test` para ver os testes na pasta backend.
