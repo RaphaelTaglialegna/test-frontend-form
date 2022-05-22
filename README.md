@@ -1,6 +1,6 @@
 ## Aplicação de Usuários
 
-<img src="https://i.ibb.co/jMwF1wS/Agrotis-Image.png" alt="Agrotis-Image" width="80%" aling="center" border="0">
+<img src="https://i.ibb.co/jMwF1wS/Agrotis-Image.png" alt="Agrotis-Image" width="80%" align="center" border="0">
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/RaphaelTaglialegna/backendContacts">
   <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/RaphaelTaglialegna/backendContacts">
