@@ -29,7 +29,7 @@ Para rodar esse projeto, existe duas formas:
 cd frontend
 npm install // para instalar as dependências
 npm start // para inicializar a pagina.
-
+``` 
 
 ### Requisitos da Aplicação 
 
