@@ -42,5 +42,7 @@ Cadastro do formulário seguindo o seguinte modelo (* campos obrigatórios):
     - Laboratório*
     - Observações
 
+Ao clicar no botão Salvar a aplicação valida dos campos e mostra um cosole.log() com o formulário criado. 
+
 ### Requisitos dos Testes
 Rode o `npm test` para ver os testes.
