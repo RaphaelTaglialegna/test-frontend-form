@@ -1,24 +1,38 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { FormContainer } from './style'
 import './index.scss'
 import { laboratories, propreties } from './selectsData'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { ErrorMessage } from '@hookform/error-message';
+
 
 type Props = {}
 
+type Inputs = {
+  nome: string,
+  dataInicial: string,
+  dataFinal: string,
+  infosPropriedade: number
+  laboratorio: number
+  observacoes: string
+}
 interface IProprety {
-  id: number,
-  propretyName: string,
+  id: number | string,
+  nome: string,
   cnpj: string
 }
 
-interface ILaboratory {
-  id: number,
-  laboratoryName: string,
-}
+// interface ILaboratory {
+//   id: number | string,
+//   laboratoryName: string,
+// }
 
 export const FormInputs: FC<Props> = (_props) => {
+  const [readToSent, setReadToSent] = useState(false);
+
+  const { register, formState: { errors }, handleSubmit } = useForm<Inputs>();
   const[ formData, setFormData] = useState(
     {
       nome: '',
@@ -35,6 +49,33 @@ export const FormInputs: FC<Props> = (_props) => {
       },
       observacoes: ''
   });
+  const onSubmit: SubmitHandler<Inputs> = data => {
+  const { nome, dataInicial, dataFinal, infosPropriedade, laboratorio, observacoes} = data;
+    
+    setFormData({...formData, nome, dataInicial, dataFinal, observacoes })
+    setLaboratory(laboratorio);
+    setProprety(infosPropriedade);
+    setReadToSent(true)
+  };
+
+  useEffect(() => {
+    if (readToSent) {
+      sentDataForm()
+      setReadToSent(false)
+    }
+}, [readToSent]);
+
+
+  const notifyError = () => toast.error('Campos obrigarórios devem ser preenchidos!', {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme:"colored",
+          });
 
   function sentDataForm () { 
     toast.success('Cadastro realizado com sucesso!', {
@@ -50,43 +91,40 @@ export const FormInputs: FC<Props> = (_props) => {
     console.log(formData)
   }
 
-  const handleChange = (e: { target: { name: string; value: string; }; }) => {
-    const { name, value } = e.target;
-    setFormData((prevState: any) => ({
-        ...prevState,
-        [name]: value
-    }));
-  };
-
-  const setProprety = (event: any) => { 
-    const value = event.target.value;
-    const {id, propretyName, cnpj} = propreties.find((prop) => +prop.id === +value) as IProprety
+  const setProprety = (propretyId: number) => { 
+    
+    const {id, propretyName, cnpj} = propreties.find((prop) => +prop.id === +propretyId) as any
    
     setFormData((prevState: any) => ({
       ...prevState,
       infosPropriedade: {id, nome:propretyName, cnpj}
     }));
 } 
-const setLaboratory = (event: any) => { 
-  const value = event.target.value;
-  const {id, laboratoryName} = laboratories.find((prop) => +prop.id === +value) as ILaboratory
- 
-  setFormData((prevState: any) => ({
-    ...prevState,
-    infosPropriedade: {id, nome:laboratoryName,}
-  }));
-} 
+  const setLaboratory = (laboratoryId: number) => { 
+  
+    const {id, laboratoryName} = laboratories.find((prop) => +prop.id === +laboratoryId) as any
+  
+    setFormData((prevState: any) => ({
+      ...prevState,
+      infosPropriedade: {id, nome:laboratoryName,}
+    }));
+  } 
 
   return (
+    
     <FormContainer>
-      <form action="" className='w-4/5 bg-white'>
+      <form 
+      action="" 
+      className='w-4/5 bg-white'
+      onSubmit={handleSubmit(onSubmit)}
+      >
+
         <div className=' h-20 bg-teal-700 text-white flex items-center px-5 justify-between'>
           <h2 className=' text-2xl font-bold'>Teste front-end</h2>
           <button 
             className=' font-bold text-2xl bg-teal-500 h-14 w-28'
-            type="button"
-            onClick={() => sentDataForm()}
-          >
+            type="submit"
+            >
             Salvar
           </button>
         </div>
@@ -97,80 +135,97 @@ const setLaboratory = (event: any) => {
                 type="text"
                 className="input-field" 
                 required
-                name="nome"
-                value={formData.nome}
-                onChange={handleChange}
+                {...register("nome", { required: "Error"})}
                 />
-              <label className="input-label">Nome *</label>
-            </div>
-            <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <input 
-                type="date" 
-                className="input-field" 
-                required
-                name="dataInicial"
-                value={formData.dataInicial}
-                onChange={handleChange}
+             
+              <label id="nome" className="input-label">Nome *</label>
+              <ErrorMessage
+                errors={errors}
+                name="nome"
+                render={({ message }) => <span>{message}</span>}
               />
-              <label className="input-label">Data Inicial *</label>
+             {errors.nome && notifyError()}
+
             </div>
             <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
               <input 
                 type="date" 
                 className="input-field" 
                 required
-                name="dataFinal"
-                value={formData.dataFinal}
-                onChange={handleChange}
+                {...register("dataInicial", { required: "Error"})}
+                />
+              <label className="input-label">Data Inicial *</label>
+              <ErrorMessage
+                errors={errors}
+                name="dataInicial"
+                render={({ message }) => <span>{message}</span>}
+              />
+
+            </div>
+            <div className="input w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <input 
+                type="date" 
+                className="input-field" 
+                required
+                {...register("dataFinal", { required: "Error"})}
                 />
               <label className="input-label">Data Final *</label>
             </div>
+            <ErrorMessage
+                errors={errors}
+                name="dataFinal"
+                render={({ message }) => <span>{message}</span>}
+              />
           </div>
           
         
           <div className="flex flex-wrap -mx-3 mb-10">          
             <div className="input w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <select 
-                className="input-field" id="grid-state"
-                name="infosPropriedade"
-                onChange={setProprety}
 
+            <select 
+                className="input-field" 
+                id="grid-state"
+                {...register("infosPropriedade", { required: "Error."})}
                 >
                 <option className='op'/>
                  {
                    propreties.map(({id, propretyName}) => (
-                    <option 
-                    key={id}
-                    value={id} 
-                    >
+                     <option key={id} value={id} >
                       <span>{propretyName}</span>
                     </option>
                    ))
-                 }                
+                  }                
                 </select>
+
               <label className="input-label block tracking-wide text-gray-700 text-ls font-bold mb-2" htmlFor="grid-state">
                 Propriedade *
               </label>
+              <ErrorMessage
+                errors={errors}
+                name="infosPropriedade"
+                render={({ message }) => <span>{message}</span>}
+              />
             </div>
             <div className="input w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <select 
-                className="input-field" 
-                id="grid-state"
-                name="laboratorio"
-                onChange={setLaboratory}
-                >
-                <option className='op'/>
-                {
-                   laboratories.map(({id, laboratoryName}) => (
-                    <option key={id} value={id}>
-                      <span>{laboratoryName}</span>
-                    </option>
-                   ))
-                 }                 
-                </select>
+              <select
+              {...register("laboratorio", { required: true})}
+              className="input-field" 
+              id="grid-state"
+              >
+              <option className='op'/>
+              {
+                laboratories.map(({id, laboratoryName}) => (
+                  <option key={id} value={id}>
+                    <span>{laboratoryName}</span>
+                  </option>
+                  ))
+                }                 
+              </select>
               <label className="input-label block tracking-wide text-gray-700 text-ls font-bold mb-2" htmlFor="grid-state">
                 Laboratório *
               </label>
+                {errors.laboratorio && <span>Error</span>}
+
             </div>
             
           </div>
@@ -179,10 +234,17 @@ const setLaboratory = (event: any) => {
               <label className="block tracking-wide text-gray-700 text-ls font-bold mb-2" htmlFor="grid-state">
                 Observações
               </label>
-              <textarea className=' w-full h-40'/>
+              <textarea className=' w-full h-40'
+               {...register("observacoes")}
+               />
             </div>
           </div>
         </div>
+ 
+      {errors.infosPropriedade && notifyError()}
+      {errors.laboratorio && notifyError()}
+
+
       </form>
       <ToastContainer
         position="bottom-center"

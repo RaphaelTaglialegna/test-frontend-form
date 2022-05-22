@@ -45,3 +45,12 @@ input {
 .op {
 	display: none;
 }
+
+span {
+  color: #bf1650;
+}
+
+span::before {
+  display: inline;
+  content: "⚠ ";
+}
